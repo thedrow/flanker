@@ -10,7 +10,7 @@ from flanker.mime.message.headers.encoding import encode_unstructured
 from flanker.mime.message import part
 from flanker.mime.message.part import MimePart
 from flanker.mime import create
-from .... import LONG_HEADER
+from .... import LONG_HEADER, ENCODED_HEADER
 
 
 def encodings_test():
@@ -61,3 +61,18 @@ def max_header_length_test():
 
         eq_(unicode_subject.encode("utf-8"),
             encode_unstructured("Subject", unicode_subject))
+
+def add_header_preserve_original_encoding_test():
+    message = create.from_string(ENCODED_HEADER)
+
+    # save original encoded from header
+    original_from = message.headers.getraw('from')
+
+    # check if the raw header was not decoded
+    ok_('=?UTF-8?B?Rm9vLCBCYXI=?=' in original_from)
+
+    # add a header
+    message.headers.add('foo', 'bar')
+
+    # check original encoded header is still in the mime string
+    ok_(original_from in message.to_string())
