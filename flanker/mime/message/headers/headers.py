@@ -1,4 +1,6 @@
 from webob.multidict import MultiDict
+
+from flanker.mime.message.headers import encodedword
 from flanker.mime.message.headers.parsing import normalize, parse_stream
 from flanker.mime.message.headers.encoding import to_mime
 from flanker.mime.message.errors import EncodingError
@@ -16,7 +18,10 @@ class MimeHeaders(object):
         self.changed = False
 
     def __getitem__(self, key):
-        return self.v.get(normalize(key), None)
+        v = self.v.get(normalize(key), None)
+        if v is not None:
+            return encodedword.decode(v)
+        return None
 
     def __len__(self):
         return len(self.v)
@@ -94,14 +99,18 @@ class MimeHeaders(object):
         """
         Returns header value (case-insensitive).
         """
-        return self.v.get(normalize(key), default)
+        v = self.v.get(normalize(key), default)
+        if v is not None:
+            return encodedword.decode(v)
+        return None
 
     def getall(self, key):
         """
         Returns all header values by the given header name
         (case-insensitive)
         """
-        return self.v.getall(normalize(key))
+        v = self.v.getall(normalize(key))
+        return [encodedword.decode(x) for x in v]
 
     def have_changed(self):
         """Tells whether someone has altered the headers
