@@ -3,6 +3,7 @@ import email
 from flanker.mime.message.scanner import ContentType
 from flanker.mime.message import utils, charsets, headers
 from flanker.mime.message.headers import parametrized
+from flanker.mime.message.headers import encodedword
 
 log = logging.getLogger(__name__)
 
@@ -159,7 +160,8 @@ def try_decode(key, value):
         return value
     elif isinstance(value, str):
         try:
-            return headers.parse_header_value(key, value)
+            return encodedword.decode(
+                headers.parse_header_value(key, value))
         except Exception:
             return unicode(value, 'utf-8', 'ignore')
     elif isinstance(value, unicode):
