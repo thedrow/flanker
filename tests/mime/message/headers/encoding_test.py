@@ -34,8 +34,9 @@ def encodings_test():
 @patch.object(part.MimePart, 'was_changed', Mock(return_value=True))        
 def max_header_length_test():
     message = create.from_string(LONG_HEADER)
+
     # this used to fail because exceeded max depth recursion
-    ok_(message.headers["Subject"].encode("utf-8") in message.to_string())
+    ok_(message.headers.getraw('subject').encode("utf-8") in message.to_string())
 
     unicode_subject = (u"Это сообщение с длинным сабжектом "
                        u"специально чтобы проверить кодировки")

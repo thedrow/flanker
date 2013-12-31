@@ -80,7 +80,6 @@ class MimeHeaders(object):
             self.v = v
             self.changed = True
 
-
     def items(self):
         """
         Returns header,val pairs in the preserved order.
@@ -103,6 +102,12 @@ class MimeHeaders(object):
         if v is not None:
             return encodedword.decode(v)
         return None
+
+    def getraw(self, key, default=None):
+        """
+        Returns raw header value (case-insensitive, non-decoded.
+        """
+        return self.v.get(normalize(key), default)
 
     def getall(self, key):
         """
