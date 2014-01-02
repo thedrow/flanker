@@ -87,11 +87,14 @@ class MimeHeaders(object):
         return list(self.iteritems())
 
 
-    def iteritems(self):
+    def iteritems(self, raw=False):
         """
         Returns iterator header,val pairs in the preserved order.
         """
-        return self.v.iteritems()
+        if raw:
+            return self.v.iteritems()
+        return iter([(x[0], encodedword.decode(x[1]))
+                            for x in self.v.iteritems()])
 
 
     def get(self, key, default=None):
@@ -135,7 +138,7 @@ class MimeHeaders(object):
         """Takes a stream and serializes headers
         in a mime format"""
 
-        for h, v in self.v.iteritems():
+        for h, v in self.iteritems(raw=True):
             try:
                 h = h.encode('ascii')
             except UnicodeDecodeError:
