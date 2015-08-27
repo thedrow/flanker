@@ -29,7 +29,7 @@ setup(name='flanker',
           'nose>=1.2.1',
           'Paste>=1.7.5',
           'redis>=2.7.1',
-          'dnspython>=1.12.0'
+          'dnspython>=1.12.0',
 
           # IMPORTANT! Newer regex versions are a lot slower for
           # mime parsing (100x slower) so keep it as-is for now.
