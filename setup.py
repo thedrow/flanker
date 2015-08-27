@@ -20,7 +20,6 @@ setup(name='flanker',
       use_2to3=True,
       install_requires=[
           'chardet>=1.0.1',
-          'dnsq>=1.1',
           'mock>=1.0.1',
           'nose>=1.2.1',
           'Paste>=1.7.5',
