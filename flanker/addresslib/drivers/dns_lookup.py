@@ -1,6 +1,5 @@
 import collections
-import dnspython
-
+import dns.resolver
 
 class DNSLookup(collections.MutableMapping):
     "DNSLookup has the same interface as a dict, but talks to a DNS server"
