@@ -2,7 +2,11 @@
 
 import sys
 from setuptools import setup, find_packages
+from setuptools.dist import Distribution
 
+class BinaryDistribution(Distribution):
+    def is_pure(self):
+        return False
 
 setup(name='flanker',
       version='0.4.14',
@@ -18,6 +22,7 @@ setup(name='flanker',
       include_package_data=True,
       zip_safe=True,
       use_2to3=True,
+      distclass=BinaryDistribution,
       install_requires=[
           'chardet>=1.0.1',
           'mock>=1.0.1',
