@@ -1,6 +1,5 @@
 import collections
-import dnsq
-
+import dns.resolver
 
 class DNSLookup(collections.MutableMapping):
     "DNSLookup has the same interface as a dict, but talks to a DNS server"
@@ -9,10 +8,7 @@ class DNSLookup(collections.MutableMapping):
         pass
 
     def __getitem__(self, key):
-        try:
-            return dnsq.mx_hosts_for(key)
-        except:
-            return []
+        return [x.exchange.to_text() for x in dns.resolver.query(key, 'MX')]
 
     def __setitem__(self, key, value):
         raise InvalidOperation('Setting MX record not supported.')

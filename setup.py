@@ -2,7 +2,11 @@
 
 import sys
 from setuptools import setup, find_packages
+from setuptools.dist import Distribution
 
+class BinaryDistribution(Distribution):
+    def is_pure(self):
+        return False
 
 setup(name='flanker',
       version='0.4.14',
@@ -18,14 +22,15 @@ setup(name='flanker',
       include_package_data=True,
       zip_safe=True,
       use_2to3=True,
+      distclass=BinaryDistribution,
       install_requires=[
           'chardet>=1.0.1',
-          'dnsq>=1.1',
-          'expiringdict>=1.1',
           'mock>=1.0.1',
           'nose>=1.2.1',
           'Paste>=1.7.5',
           'redis>=2.7.1',
+          'dnspython>=1.12.0',
+
           # IMPORTANT! Newer regex versions are a lot slower for
           # mime parsing (100x slower) so keep it as-is for now.
           'regex>=0.1.20110315',
